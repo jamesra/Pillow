@@ -85,7 +85,7 @@ NAME = 'Pillow'
 VERSION = '2.3.0'
 TCL_ROOT = None
 JPEG_ROOT = None
-ZLIB_ROOT = None
+ZLIB_ROOT = "D:\Lib\zlib-win64"
 TIFF_ROOT = None
 FREETYPE_ROOT = None
 LCMS_ROOT = None
@@ -139,7 +139,7 @@ class pil_build_ext(build_ext):
 
         global TCL_ROOT
 
-        library_dirs = []
+        library_dirs = ['C:\\Src\\Python-2.7.6\\PCbuild\\amd64']
         include_dirs = []
 
         _add_directory(include_dirs, "libImaging")
@@ -186,8 +186,8 @@ class pil_build_ext(build_ext):
                     _add_directory(library_dirs, os.path.join(prefix, 'lib'))
                     _add_directory(include_dirs, os.path.join(prefix, 'include'))
             except:
-                pass # homebrew not installed
-                    
+                pass  # homebrew not installed
+
         elif sys.platform.startswith("linux"):
             for platform_ in (plat.processor(), plat.architecture()[0]):
 
@@ -217,6 +217,8 @@ class pil_build_ext(build_ext):
 
         _add_directory(library_dirs, "/usr/local/lib")
         # FIXME: check /opt/stuff directories here?
+
+        self.debug = True
 
         # respect CFLAGS/LDFLAGS
         for k in ('CFLAGS', 'LDFLAGS'):
@@ -367,7 +369,7 @@ class pil_build_ext(build_ext):
         if feature.want('webp'):
             if (_find_include_file(self, "webp/encode.h") and
                     _find_include_file(self, "webp/decode.h")):
-                if _find_library_file(self, "webp"): # in googles precompiled zip it is call "libwebp"
+                if _find_library_file(self, "webp"):  # in googles precompiled zip it is call "libwebp"
                     feature.webp = "webp"
 
         if feature.want('webpmux'):
@@ -611,7 +613,7 @@ setup(
     packages=find_packages(),
     scripts=glob.glob("Scripts/pil*.py"),
     test_suite='PIL.tests',
-    keywords=["Imaging",],
+    keywords=["Imaging", ],
     license='Standard PIL License',
     zip_safe=True,
     )
